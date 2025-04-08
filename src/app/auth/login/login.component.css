@@ -1,0 +1,7 @@
+.login-container{
+    display: flex;
+    justify-content: center;
+}
+.mat-card{
+    padding: 20px;
+}

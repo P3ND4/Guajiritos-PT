@@ -1,0 +1,26 @@
+{
+  "users": [
+    {
+      "id": 2,
+      "name": "user",
+      "password": "user123",
+      "role": "User",
+      "email": "user@fake"
+    },
+    {
+      "email": "admin@fake",
+      "password": "$2a$10$bLvOxOiBa2XiZBo.nq8dW.dNnFzQg5c/lfilS2pmBZ7IX1J8Zjp9q",
+      "name": "admin",
+      "role": "Admin",
+      "id": 3
+    },
+    {
+      "email": "user2@fake",
+      "password": "$2a$10$r1V5XIM4n3quSE.u6ASRAebBnr5hUBOZ3Xl34tQTRuCxYs4tjwZM6",
+      "name": "user",
+      "role": "User",
+      "id": 4
+    }
+  ],
+  "tasks": []
+}
