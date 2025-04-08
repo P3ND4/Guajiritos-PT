@@ -19,11 +19,11 @@
                     <input
                       matInput
                       placeholder="pat@example.com"
-                      [formControl]="email"
+                      formControlName="email"
                       (blur)="updateErrorMessage()"
                       required
                     />
-                    @if (email.invalid) {
+                    @if (formLogin.get("email")?.invalid) {
                       <mat-error>{{errorMessage()}}</mat-error>
                     }
                   </mat-form-field>
