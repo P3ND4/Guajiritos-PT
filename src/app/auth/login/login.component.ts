@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -7,8 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from "@angular/material/button"
 import { AuthService } from '../../services/auth/auth.service';
-import { response } from 'express';
 import { error } from 'node:console';
+import { isNumberObject } from 'node:util/types';
 
 @Component({
   standalone: true,
@@ -23,7 +24,7 @@ export class LoginComponent {
   currentUser: string = "Perdro"
   errorMessage = signal('');
 
-  constructor(private form: FormBuilder,private _authS: AuthService) {
+  constructor(private form: FormBuilder,private _authS: AuthService, private route: Router) {
     this.formLogin = this.form.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -53,6 +54,7 @@ export class LoginComponent {
       next: (response) => {
       console.log(response)
       this.errMsg = ''
+      this.route.navigate([''])
       },
       error: (err:Error) => {
         this.errMsg = err.message

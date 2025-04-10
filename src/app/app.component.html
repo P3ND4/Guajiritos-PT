@@ -174,14 +174,26 @@
     }
   }
 </style>
+<!--
+  <div *ngIf="loading" class="overlay">
+    <mat-spinner></mat-spinner>
+  </div>
+  -->
 <div *ngIf="isLoggedIn()" class = "tab-container">
-  <nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  <div class="tab-header">
+    <h1>Welcome {{userName()}}</h1>
+    <button mat-button class="logout-button" (click)="logout()">
+      <mat-icon>logout</mat-icon>
+      Logout
+    </button>
+  </div>
+  <nav mat-tab-nav-bar class="nav-bar" [tabPanel]="tabPanel">
     @for (link of links; track link) {
-      <a mat-tab-link
-        (click)="activeLink = link"
-        [active]="activeLink == link"> {{link}} </a>
+      <a mat-tab-link class="nav-link"
+        (click)="activeLink = link.route"
+        routerLink="/{{link.route}}"
+        [active]="activeLink == link.route"> {{link.name}} </a>
     }
-    <a mat-tab-link disabled>Disabled Link</a>
   </nav>
   <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
 </div>

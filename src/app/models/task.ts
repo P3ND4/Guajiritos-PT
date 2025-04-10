@@ -4,7 +4,7 @@ export interface ITask{
     id: number, 
     name: string, 
     state: State,
-    user: IUser
+    userId: Number
 }
 
 enum State{

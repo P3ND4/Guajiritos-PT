@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { isPlatformBrowser } from '@angular/common'
 import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { IUser } from '../../models/user';
-import { catchError, Observable, map, throwError } from 'rxjs';
+import { catchError, Observable, map, throwError, BehaviorSubject } from 'rxjs';
 import { response } from 'express';
 import { error } from 'node:console';
 
@@ -11,18 +11,19 @@ import { error } from 'node:console';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/';
-  currentUser: IUser | undefined
+  
+  private usuarioSubject: BehaviorSubject<IUser | undefined> = new BehaviorSubject<IUser | undefined>(undefined); // Inicializa el BehaviorSubject
+  currentUser$ = this.usuarioSubject.asObservable();
   user_token: string | undefined
 
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
-
   }
 
   login(userEmail: string, password: string): Observable<{ user: IUser, accessToken: string } | any> {
     return this.http.post<{ user: IUser, accessToken: string }>(`${this.apiUrl}login`, { email: `${userEmail}`, password: `${password}` }).pipe(
       map(response => {
-        this.currentUser = response.user
+        this.usuarioSubject.next(response.user); // Actualiza el BehaviorSubject con el nuevo usuario
         this.storeLocal('currentUser', JSON.stringify(response.user))
         this.storeLocal('accessToken', response.accessToken)
         return response
@@ -37,7 +38,7 @@ export class AuthService {
     return this.http.post<{ user: IUser, accessToken: string } | any>(`${this.apiUrl}/register`, user).pipe(
       map(response => {
 
-        this.currentUser = response.user
+        this.usuarioSubject.next(response.user)
         this.storeLocal('currentUser', JSON.stringify(response.user))
         this.storeLocal('accessToken', response.accessToken)
         return response
@@ -54,7 +55,8 @@ export class AuthService {
   logOut(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('accessToken');
-      this.currentUser = undefined
+      localStorage.removeItem('currentUser');
+      this.usuarioSubject.next(undefined); // Actualizar el observable
       this.user_token = undefined
     }
   }
