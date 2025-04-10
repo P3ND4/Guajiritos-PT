@@ -1,8 +1,10 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common'
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { IUser } from '../../models/user';
 import { catchError, Observable, map, throwError } from 'rxjs';
 import { response } from 'express';
+import { error } from 'node:console';
 
 @Injectable({
   providedIn: 'root'
@@ -12,49 +14,73 @@ export class AuthService {
   currentUser: IUser | undefined
   user_token: string | undefined
 
-  constructor(private http: HttpClient) {
-    const user = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+
   }
 
-  login(userName: string, password: string): Observable<{ user: IUser, accessToken: string } | any> {
-    return this.http.post<{ user: IUser, accessToken: string }>(`${this.apiUrl}/login`, { name: `${userName}@fake`, password: `${password}` }).pipe(
+  login(userEmail: string, password: string): Observable<{ user: IUser, accessToken: string } | any> {
+    return this.http.post<{ user: IUser, accessToken: string }>(`${this.apiUrl}login`, { email: `${userEmail}`, password: `${password}` }).pipe(
       map(response => {
-        if (response && response.accessToken) {
-          this.currentUser = response.user
-          localStorage.setItem('currentUser', JSON.stringify(response.user))
-          localStorage.setItem('accesToken', response.accessToken)
-          return response
-        }
-        else return throwError(() => new Error("Usuario o contraseña incorrectos"))
+        this.currentUser = response.user
+        this.storeLocal('currentUser', JSON.stringify(response.user))
+        this.storeLocal('accessToken', response.accessToken)
+        return response
+      }),
+      catchError(err => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(this.getErrorMessage(err)));
       })
     )
   }
   register(user: IUser): Observable<{ user: IUser, accessToken: string }> {
     return this.http.post<{ user: IUser, accessToken: string } | any>(`${this.apiUrl}/register`, user).pipe(
       map(response => {
-        if (response && response.accessToken) {
-          this.currentUser = response.user
-          localStorage.setItem('currentUser', JSON.stringify(response.user))
-          localStorage.setItem('accessToken', response.accessToken)
-          return response
-        }
-        else return throwError(() => new Error("Usuario o contraseña incorrectos"))
+
+        this.currentUser = response.user
+        this.storeLocal('currentUser', JSON.stringify(response.user))
+        this.storeLocal('accessToken', response.accessToken)
+        return response
+      }),
+      catchError(err =>{
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(this.getErrorMessage(err)));
+
       })
 
     )
   }
 
-  logOut(): void{
-    localStorage.removeItem('auth_token');
-    this.currentUser = undefined
+  logOut(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('accessToken');
+      this.currentUser = undefined
+      this.user_token = undefined
+    }
   }
 
-  isLoggedIn(){
-    return localStorage.getItem('accessToken') != null
+  public isLoggedIn() {
+    if (isPlatformBrowser(this.platformId)) {
+      return localStorage.getItem('accessToken') != null
+    }
+    else return false
   }
 
+  private storeLocal(key: string, value: string) {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.setItem(key, value)
+    }
+  }
 
-
+  private getErrorMessage(error: any): string {
+    if (error && error.error) {
+      return error.error;
+    } else if (error.status === 0) {
+      return 'No se pudo conectar al servidor';
+    } else {
+      return 'Ocurrió un error inesperado';
+    }
+  }
 
 
 

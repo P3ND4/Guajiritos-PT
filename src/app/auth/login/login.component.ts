@@ -1,24 +1,29 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import {MatFormFieldModule} from '@angular/material/form-field';
-import {MatIconModule} from '@angular/material/icon';
-import {MatInputModule} from '@angular/material/input';
-import {MatCardModule} from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from "@angular/material/button"
+import { AuthService } from '../../services/auth/auth.service';
+import { response } from 'express';
+import { error } from 'node:console';
 
 @Component({
+  standalone: true,
   selector: 'app-login',
-  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatIconModule, MatCardModule],
+  imports: [FormsModule, ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatIconModule,
+    MatCardModule, MatButtonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css'
 })
-export class LoginComponent implements OnInit{
-
+export class LoginComponent {
   formLogin: FormGroup
   currentUser: string = "Perdro"
   errorMessage = signal('');
 
-  constructor(private form: FormBuilder){
+  constructor(private form: FormBuilder,private _authS: AuthService) {
     this.formLogin = this.form.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -27,10 +32,6 @@ export class LoginComponent implements OnInit{
   }
 
 
-  ngOnInit(): void {
-    
-  }
-  
   updateErrorMessage() {
     if (this.formLogin.get('email')?.hasError('required')) {
       this.errorMessage.set('You must enter a value');
@@ -40,5 +41,22 @@ export class LoginComponent implements OnInit{
       this.errorMessage.set('');
     }
   }
+  hide = signal(true);
+  hideBt(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
 
+  errMsg: string = ''
+  submit(){
+    this._authS.login(this.formLogin.get('email')?.value, this.formLogin.get('password')?.value).subscribe({
+      next: (response) => {
+      console.log(response)
+      this.errMsg = ''
+      },
+      error: (err:Error) => {
+        this.errMsg = err.message
+      }}
+    )
+  }
 }

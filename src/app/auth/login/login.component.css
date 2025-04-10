@@ -1,7 +1,21 @@
 .login-container{
     display: flex;
     justify-content: center;
+    align-items: center;
+    padding-top: 8%;
 }
-.mat-card{
-    padding: 20px;
+.login-card{
+    display: flex;
+    flex-direction: column;
+    gap: 20px
+}
+.login{
+    display: flex;
+    flex-direction: column;
+    gap: 10px
+}
+
+.footer{
+    display: flex;
+    justify-content: center;
 }
