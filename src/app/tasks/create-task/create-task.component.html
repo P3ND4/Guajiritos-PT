@@ -1,0 +1,33 @@
+<div class="dialog">
+
+    <h2 mat-dialog-title>
+        Agregar una tarea
+    </h2>
+    <mat-dialog-content>
+        <form class="task-form" [formGroup]="formTaskCreate" (submit)="submit()">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Fulanito Perez Perez" formControlName="name" required />
+                @if(!formTaskCreate.get("name")?.invalid){
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                }
+                @else {
+                <mat-icon matSuffix>sentiment_dissatisfied</mat-icon>
+                }
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Usuario</mat-label>
+                <mat-select formControlName="user" required>
+                    <mat-option>None</mat-option>
+                    @for (user of userList; track user.id) {
+                    <mat-option  [value]="user">{{user.name}} : {{user.id}}</mat-option>
+                    }
+                </mat-select>
+            </mat-form-field>
+
+
+            <button type="submit" mat-raised-button>Submit</button>
+        </form>
+    </mat-dialog-content>
+</div>

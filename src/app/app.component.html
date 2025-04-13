@@ -179,9 +179,10 @@
     <mat-spinner></mat-spinner>
   </div>
   -->
+
 <div *ngIf="isLoggedIn()" class = "tab-container">
   <div class="tab-header">
-    <h1>Welcome {{userName()}}</h1>
+    <h1>Welcome {{user?.name}}</h1>
     <button mat-button class="logout-button" (click)="logout()">
       <mat-icon>logout</mat-icon>
       Logout
@@ -192,7 +193,7 @@
       <a mat-tab-link class="nav-link"
         (click)="activeLink = link.route"
         routerLink="/{{link.route}}"
-        [active]="activeLink == link.route"> {{link.name}} </a>
+        [active]="isActive(link.route)"> {{link.name}} </a>
     }
   </nav>
   <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

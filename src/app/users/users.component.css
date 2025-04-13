@@ -1,0 +1,16 @@
+.card-task-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin: 20px;
+}
+.mat-elevation-z8{
+    border: 2px solid black;
+    border-radius: 8px;
+    padding: 1rem;
+}
+.actions{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 20px;
+}

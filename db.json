@@ -1,13 +1,6 @@
 {
   "users": [
     {
-      "id": 2,
-      "name": "user",
-      "password": "user123",
-      "role": "User",
-      "email": "user@fake"
-    },
-    {
       "email": "admin@fake",
       "password": "$2a$10$bLvOxOiBa2XiZBo.nq8dW.dNnFzQg5c/lfilS2pmBZ7IX1J8Zjp9q",
       "name": "admin",
@@ -15,12 +8,62 @@
       "id": 3
     },
     {
-      "email": "user2@fake",
-      "password": "$2a$10$r1V5XIM4n3quSE.u6ASRAebBnr5hUBOZ3Xl34tQTRuCxYs4tjwZM6",
-      "name": "user",
+      "email": "ed@gmail",
+      "password": "$2a$10$8wicgJB3jS8Ty4XxY9u54.5TruqcP2IimQOpY2sSAGPedf6EPZA9a",
+      "name": "eduardo",
       "role": "User",
-      "id": 4
+      "id": 5
+    },
+    {
+      "email": "mar@gmail",
+      "password": "$2a$10$WrKnb0TNamvoEWN6kxbso.bnZlyBp.mOgTwnRSCgh73WUQLSQQutO",
+      "name": "marlon",
+      "role": "Admin",
+      "id": 6
+    },
+    {
+      "email": "fil@fafs",
+      "password": "$2a$10$MAHBPPF/fWPAIIaNg5NdheN/u9W9VzaQIA/LWYBHUWBtyNqCHKire",
+      "name": "Fulanito Perez Perez",
+      "role": "User",
+      "id": 7
+    },
+    {
+      "email": "pab@fake",
+      "password": "$2a$10$RPBhpwnXd6P2pDi1cxVSm.NnhaURj08.fVa7QO7h7XmeVWxNIaRAy",
+      "name": "Pablo de la Torriente brau y san benitez",
+      "role": "User",
+      "id": 8
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "name": "limpia",
+      "state": "Pendiente",
+      "userId": 3,
+      "userName": "admin",
+      "id": 1
+    },
+    {
+      "name": "friega",
+      "state": "Pendiente",
+      "userId": 7,
+      "userName": "Fulanito Perez Perez",
+      "id": 2
+    },
+    {
+      "name": "enjuaga",
+      "state": "Pendiente",
+      "userId": 5,
+      "userName": "eduardo",
+      "id": 3
+    },
+    {
+      "name": "edita",
+      "state": "Pendiente",
+      "userId": 6,
+      "userName": "marlon",
+      "id": 4
+    }
+  ]
 }

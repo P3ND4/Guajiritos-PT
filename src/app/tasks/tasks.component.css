@@ -9,3 +9,8 @@
     border-radius: 8px;
     padding: 1rem;
 }
+.actions{
+    display: flex;
+    flex-direction: row-reverse;
+    gap: 20px;
+}

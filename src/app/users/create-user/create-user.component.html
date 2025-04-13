@@ -1,0 +1,100 @@
+<div class="dialog-container">
+
+    <h2 class="title" mat-dialog-title>
+        Agregar usuario
+    </h2>
+
+    <mat-dialog-content class="dialog">
+
+        <form [formGroup]="formCreation" class="create" (ngSubmit)="submit()">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nombre</mat-label>
+                <input matInput placeholder="Fulanito Perez Perez" formControlName="name" (blur)="updateErrorMessage()"
+                    required />
+                @if(!formCreation.get("name")?.invalid){
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                }
+                @else {
+                <mat-icon matSuffix>sentiment_dissatisfied</mat-icon>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="pat@example.com" formControlName="email" (blur)="updateErrorMessage()"
+                    required />
+                @if(!formCreation.get("email")?.invalid){
+                <mat-icon matSuffix>sentiment_very_satisfied</mat-icon>
+                }
+                @else {
+                <mat-icon matSuffix>sentiment_dissatisfied</mat-icon>
+                }
+                @if (formCreation.get("email")?.invalid) {
+                <mat-error>{{errorMessage()}}</mat-error>
+                }
+            </mat-form-field>
+
+
+            <mat-form-field appearance="outline">
+                <mat-label>Enter your password</mat-label>
+                <input matInput formControlName="password" [type]="hide() ? 'password' : 'text'" required />
+                <button mat-icon-button matSuffix (click)="hideBt($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()" type="button">
+                    <mat-icon
+                        [ngStyle]="{'color': (formCreation.get('password')?.invalid && formCreation.get('password')?.touched)? 'red': null}">
+                        {{hide() ? 'visibility_off' : 'visibility'}}
+                    </mat-icon>
+                </button>
+                @if(formCreation.get("password")?.hasError('required')){
+                <mat-error>You must enter your password</mat-error>
+                }
+                @else if(formCreation.get('password')?.hasError('minLength') && formCreation.get("password")?.touched){
+                <mat-error>Your password must contain 6 characters</mat-error>
+                }
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Confirm password</mat-label>
+                <input matInput formControlName="passwordC" [type]="hide() ? 'password' : 'text'" required />
+                <button mat-icon-button matSuffix (click)="hideBt($event)" [attr.aria-label]="'Hide password'"
+                    [attr.aria-pressed]="hide()" type="button">
+                    <mat-icon  [ngStyle]="{'color': (formCreation.get('passwordC')?.invalid && formCreation.get('passwordC')?.touched)? 'red': null}">
+                        {{hide() ? 'visibility_off' : 'visibility'}}
+                    </mat-icon>
+                </button>
+                @if (formCreation.get("passwordC")?.hasError('required')) {
+                <mat-error>You must enter your password</mat-error>
+                }
+                @else if (formCreation.get('passwordC')?.invalid && formCreation.get("passwordC")?.touched) {
+                <mat-error>Las contraseñas no coinciden</mat-error>
+                }
+
+            </mat-form-field>
+
+            <mat-form-field>
+                <mat-label>Rol del usuario</mat-label>
+                <mat-select formControlName="role" required>
+                    <mat-option>--</mat-option>
+                    @for (role of roles; track role) {
+                    <mat-option [value]="role">{{role}}</mat-option>
+                    }
+                </mat-select>
+                @if (formCreation.hasError('required')) {
+                <mat-error>Please choose a role</mat-error>
+                }
+
+            </mat-form-field>
+
+
+            @if(errMsg != ''){
+            <mat-error>{{errMsg}}</mat-error>
+            }
+
+
+            <button type="submit" mat-raised-button>Submit</button>
+
+        </form>
+
+    </mat-dialog-content>
+</div>

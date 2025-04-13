@@ -4,6 +4,7 @@ import { IUser } from '../../models/user';
 import { HttpClient } from '@angular/common/http';
 import { response } from 'express';
 import { ITask } from '../../models/task';
+import { url } from 'inspector';
 @Injectable({
   providedIn: 'root'
 })
@@ -22,8 +23,19 @@ export class ApiDbService {
       }))
 
   }
+  createUsers(data: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}register`, data).pipe(
+      map(response => {
+        return response
+      }),
+      catchError((err) => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(err.message));
+      })
+    )
+  }
   getTasks(): Observable<ITask[]> {
-    return this.http.get<ITask[]>(`${this.apiUrl}users`).pipe(
+    return this.http.get<ITask[]>(`${this.apiUrl}tasks`).pipe(
       map(response => {
         return response
       }),
@@ -31,5 +43,35 @@ export class ApiDbService {
         console.error('Error desde la API', err);
         return throwError(() => new Error(err.message));
       }))
-    }
   }
+  deleteUser(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}users/${id}`).pipe(
+      map(response => {
+        return response
+      }),
+      catchError((err) => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(err.message));
+      }))
+  }
+  deleteTask(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}tasks/${id}`).pipe(
+      map(response => {
+        return response
+      }),
+      catchError((err) => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(err.message));
+      }))
+  }
+  createTask(task: ITask) {
+    return this.http.post(`${this.apiUrl}tasks`, task).pipe(
+      map(response => {
+        return response
+      }),
+      catchError((err) => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(err.message));
+      }))
+  }
+}

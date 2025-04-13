@@ -22,23 +22,22 @@ export class AppComponent implements OnInit{
   links = [{route:"tasks", name: "Tareas"}, {route:"users", name: "Usuarios"}];
   activeLink = this.links[0].route;
   user: IUser | undefined
-  userName = signal('')
   
   constructor(private router: Router,private authServ: AuthService) {
   }
 
   ngOnInit(): void {
+    this.activeLink = this.router.url.split('/')[1]
+    console.log(this.activeLink)
     this.authServ.currentUser$.subscribe(usuario => {
       if(!!usuario){
         this.user = usuario
-        this.userName.set(usuario.name || '')
       }
     })
     if(!this.authServ.isLoggedIn()) {
       this.router.navigate(['login'])
     }else{
       this.user = localStorage.getItem('currentUser') ? JSON.parse(localStorage.getItem('currentUser') || '') : undefined
-      this.userName.set(this.user?.name || '')
     }
 
   }
@@ -49,6 +48,9 @@ export class AppComponent implements OnInit{
   logout() {
     this.authServ.logOut()
     this.router.navigate(['login'])
+  }
+  isActive(route: string){
+    return this.router.url.split('/')[1] === route
   }
 
 }
