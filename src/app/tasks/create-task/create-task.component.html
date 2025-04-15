@@ -19,11 +19,22 @@
             <mat-form-field>
                 <mat-label>Usuario</mat-label>
                 <mat-select formControlName="user" required>
-                    <mat-option>None</mat-option>
+                    
                     @for (user of userList; track user.id) {
                     <mat-option  [value]="user">{{user.name}} : {{user.id}}</mat-option>
                     }
                 </mat-select>
+            </mat-form-field>
+
+            <mat-form-field *ngIf="data.edit">
+                <mat-label>Estado</mat-label>
+                <mat-select formControlName="state" required>
+                    <mat-option>--</mat-option>
+                    @for (state of states; track state) {
+                    <mat-option [value]="state">{{state}}</mat-option>
+                    }
+                </mat-select>
+
             </mat-form-field>
 
 

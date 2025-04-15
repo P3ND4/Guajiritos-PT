@@ -15,17 +15,17 @@
       "id": 5
     },
     {
+      "name": "marlon domingez",
+      "password": "$2a$10$AH1zruQNOeZuHzhi7r2yWOTq1GsF11K7Vg/S5y77Zz9FwXm1npZbe",
+      "role": "User",
       "email": "mar@gmail",
-      "password": "$2a$10$WrKnb0TNamvoEWN6kxbso.bnZlyBp.mOgTwnRSCgh73WUQLSQQutO",
-      "name": "marlon",
-      "role": "Admin",
       "id": 6
     },
     {
-      "email": "fil@fafs",
-      "password": "$2a$10$MAHBPPF/fWPAIIaNg5NdheN/u9W9VzaQIA/LWYBHUWBtyNqCHKire",
       "name": "Fulanito Perez Perez",
-      "role": "User",
+      "password": "$2a$10$l8MMVacWybBcrtI0qbYyduC8yRLlGjHB4juUVJ9nE0t0.JY3PvuuW",
+      "role": "Admin",
+      "email": "fil@fafs",
       "id": 7
     },
     {
@@ -34,6 +34,13 @@
       "name": "Pablo de la Torriente brau y san benitez",
       "role": "User",
       "id": 8
+    },
+    {
+      "email": "yo@fake",
+      "password": "$2a$10$9plzUTte2Wwj043eCrOCH.3Y9vTu6/iOfOWHeNI6IwXd805W8yE0i",
+      "name": "yo",
+      "role": "User",
+      "id": 9
     }
   ],
   "tasks": [
@@ -52,8 +59,8 @@
       "id": 2
     },
     {
-      "name": "enjuaga",
-      "state": "Pendiente",
+      "name": "friega",
+      "state": "Completada",
       "userId": 5,
       "userName": "eduardo",
       "id": 3
@@ -64,6 +71,27 @@
       "userId": 6,
       "userName": "marlon",
       "id": 4
+    },
+    {
+      "name": "lavate la cara",
+      "state": "Pendiente",
+      "userId": 5,
+      "userName": "eduardo",
+      "id": 5
+    },
+    {
+      "name": "limpia",
+      "state": "En progreso",
+      "userId": 9,
+      "userName": "yo",
+      "id": 6
+    },
+    {
+      "name": "paga la luz",
+      "state": "Pendiente",
+      "userId": 9,
+      "userName": "yo",
+      "id": 7
     }
   ]
 }

@@ -8,9 +8,6 @@ import { MatError, MatFormFieldModule } from '@angular/material/form-field';
 import { Router } from '@angular/router'
 import {
   MAT_DIALOG_DATA,
-  MatDialog,
-  MatDialogActions,
-  MatDialogClose,
   MatDialogContent,
   MatDialogModule,
   MatDialogRef,
@@ -20,6 +17,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { Role, IUser } from '../../models/user';
 import { ApiDbService } from '../../services/api.db/api.db.service';
+import { DialogData } from '../users.component';
 
 
 @Component({
@@ -34,9 +32,10 @@ export class CreateUserComponent implements OnInit {
   formCreation: FormGroup
   currentUser: string = "Perdro"
   errorMessage = signal('');
+  userEdition: IUser | undefined;
   readonly dialogRef = inject(MatDialogRef<CreateUserComponent>);
   roles: string[] = [Role.Admin, Role.User]
-
+  data = inject<DialogData>(MAT_DIALOG_DATA)
   onNoClick(): void {
     this.dialogRef.close();
   }
@@ -53,6 +52,13 @@ export class CreateUserComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    if (this.data.edit) {
+      this.formCreation.get('name')?.setValue(this.data.user.name)
+      this.formCreation.get('email')?.setValue(this.data.user.email)
+      this.formCreation.get('role')?.setValue(this.data.user.role)
+
+    }
+
     this.formCreation.get('passwordC')?.valueChanges.subscribe(() => {
       this.formCreation.updateValueAndValidity({ onlySelf: true, emitEvent: false });
     });
@@ -100,11 +106,19 @@ export class CreateUserComponent implements OnInit {
       role: this.formCreation.get('role')?.value,
       email: this.formCreation.get('email')?.value
     }
-    this.api.createUsers(result).subscribe(response =>{
-      console.log(response)
+    if (this.data.edit) {
+      this.api.editUser(this.data.user.id!, result).subscribe(response => {
+        console.log(response)
+      })
+      this.dialogRef.close();
     }
-    )
-    this.dialogRef.close();
+    else {
+      this.api.createUsers(result).subscribe(response => {
+        console.log(response)
+      }
+      )
+      this.dialogRef.close();
+    }
 
   }
 }

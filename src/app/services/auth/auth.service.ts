@@ -11,7 +11,7 @@ import { error } from 'node:console';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/';
-  
+
   private usuarioSubject: BehaviorSubject<IUser | undefined> = new BehaviorSubject<IUser | undefined>(undefined); // Inicializa el BehaviorSubject
   currentUser$ = this.usuarioSubject.asObservable();
   user_token: string | undefined
@@ -43,7 +43,7 @@ export class AuthService {
         this.storeLocal('accessToken', response.accessToken)
         return response
       }),
-      catchError(err =>{
+      catchError(err => {
         console.error('Error desde la API', err);
         return throwError(() => new Error(this.getErrorMessage(err)));
 
@@ -81,6 +81,15 @@ export class AuthService {
       return 'No se pudo conectar al servidor';
     } else {
       return 'Ocurrió un error inesperado';
+    }
+  }
+  getCurrentUser(): IUser | any {
+    if (typeof window !== 'undefined') {
+      const usr = localStorage.getItem('currentUser')
+      if (usr) {
+        return JSON.parse(usr)
+      }
+      else return usr
     }
   }
 

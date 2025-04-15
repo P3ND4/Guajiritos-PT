@@ -8,20 +8,19 @@ import { ApiDbService } from '../services/api.db/api.db.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { response } from 'express';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateUserComponent } from './create-user/create-user.component';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
+export interface DialogData {
+  edit: boolean,
+  user: IUser
 }
 
 /**
  * @title Table with selection
  */
 @Component({
+  standalone: true,
   selector: 'users-table',
   styleUrl: 'users.component.css',
   templateUrl: 'users.component.html',
@@ -81,7 +80,7 @@ export class UsersComponent implements OnInit {
       this.usersList = this.usersList.filter(elem => elem.id != sel.id)
       this.dataSource = new MatTableDataSource<IUser>(this.usersList)
       this.selection.toggle(sel)
-      this.api.deleteUser(sel.id).subscribe(response => {
+      this.api.deleteUser(sel.id!).subscribe(response => {
         console.log(response)
       }
       )
@@ -89,18 +88,28 @@ export class UsersComponent implements OnInit {
   }
 
   readonly dialog = inject(MatDialog);
-  openDialog(): void {
+  openDialog(edit: boolean): void {
+    var sel: IUser | undefined;
+    if (edit) {
+      sel = this.selection.selected[0]
+    }
+    for (const select of this.selection.selected) {
+      this.selection.toggle(select)
+    }
     const dialogRef = this.dialog.open(CreateUserComponent, {
-      data: {},
+      data: { edit: edit, user: edit ? sel : null }
     });
-
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
-      this.api.getUsers().subscribe(response=>{
-       this.usersList = response
+      this.selection.deselect(this.selection.selected[0])
+      this.api.getUsers().subscribe(response => {
+        this.usersList = response
         this.dataSource = new MatTableDataSource<IUser>(this.usersList)
       })
-      
+
     });
+  }
+
+  canEdit() {
+    return this.selection.selected.length == 1
   }
 }

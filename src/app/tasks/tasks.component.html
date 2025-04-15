@@ -7,7 +7,7 @@
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
 
         <!-- Checkbox Column -->
-        <ng-container matColumnDef="select">
+        <ng-container matColumnDef="select" >
           <th mat-header-cell *matHeaderCellDef>
             <mat-checkbox (change)="$event ? toggleAllRows() : null" [checked]="selection.hasValue() && isAllSelected()"
               [indeterminate]="selection.hasValue() && !isAllSelected()" [aria-label]="checkboxLabel()">
@@ -52,18 +52,18 @@
       </table>
       
     </mat-card-content>
-    <mat-card-actions class="actions">
+    <mat-card-actions class="actions" *ngIf="currUs?.role == 'Admin'">
       <button mat-fab [disabled]="isAnySelected()" (click)="deleteSelected()">
         <mat-icon>
           delete
         </mat-icon>
       </button>
 
-      <button mat-fab>
+      <button mat-fab (click)="openDialog(true)" [disabled]="!canEdit()">
         <mat-icon>edit</mat-icon>
       </button>
 
-      <button mat-fab (click)="openDialog()">
+      <button mat-fab (click)="openDialog(false)">
         <mat-icon >add_task</mat-icon>
       </button>
     </mat-card-actions>

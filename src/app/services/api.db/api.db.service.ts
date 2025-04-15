@@ -11,7 +11,7 @@ import { url } from 'inspector';
 export class ApiDbService {
   private apiUrl = 'http://localhost:3000/';
   constructor(private http: HttpClient) { }
-
+  
   getUsers(): Observable<IUser[]> {
     return this.http.get<IUser[]>(`${this.apiUrl}users`).pipe(
       map(response => {
@@ -20,10 +20,34 @@ export class ApiDbService {
       catchError((err) => {
         console.error('Error desde la API', err);
         return throwError(() => new Error(err.message));
+      })
+    )
+      
+    }
+    getUser(id: number): Observable<IUser>{
+      return this.http.get<IUser>(`${this.apiUrl}${id}`).pipe(
+      map(response =>{
+        return response
+      }),
+      catchError((err) => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(err.message));
       }))
+    };
+    editUser(id: number, body: IUser){
+      return this.http.put(`${this.apiUrl}users/${id}`, body).pipe(
+        map(response => {
+          return response
+        }),
+        catchError((err) => {
+          console.error('Error desde la API', err);
+          return throwError(() => new Error(err.message));
+        })
+      )
+    }
 
-  }
-  createUsers(data: any): Observable<any> {
+
+    createUsers(data: any): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}register`, data).pipe(
       map(response => {
         return response
@@ -67,6 +91,16 @@ export class ApiDbService {
   createTask(task: ITask) {
     return this.http.post(`${this.apiUrl}tasks`, task).pipe(
       map(response => {
+        return response
+      }),
+      catchError((err) => {
+        console.error('Error desde la API', err);
+        return throwError(() => new Error(err.message));
+      }))
+  }
+  editTask(id:number, task:ITask){
+    return this.http.put(`${this.apiUrl}tasks/${id}`, task).pipe(
+      map(response =>{
         return response
       }),
       catchError((err) => {

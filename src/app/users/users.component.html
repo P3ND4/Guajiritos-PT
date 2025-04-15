@@ -62,11 +62,11 @@
               </mat-icon>
             </button>
 
-            <button mat-fab>
+            <button mat-fab [disabled]="!canEdit()" (click)="openDialog(true)">
               <mat-icon color="accent">edit</mat-icon>
             </button>
 
-            <button mat-fab (click)="openDialog()">
+            <button mat-fab (click)="openDialog(false)">
               <mat-icon>person_add</mat-icon>
             </button>
         </mat-card-actions>
