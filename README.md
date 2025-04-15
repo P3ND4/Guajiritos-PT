@@ -37,7 +37,7 @@ json-server db.json -m ./node_modules/json-server-auth
 ```
 ## Once running
 
-The only user in the DB is "admin" with the password: "admin". To log in, you must type the email: `admin@admin` and the password.
+The only user in the DB is "admin" with the password: "admin1". To log in, you must type the email: `admin@admin` and the password.
 
 
 ## Warning:
