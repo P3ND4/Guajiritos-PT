@@ -8,10 +8,14 @@ import { ApiDbService } from '../services/api.db/api.db.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { response } from 'express';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CreateUserComponent } from './create-user/create-user.component';
-import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../services/auth/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+
+
 
 export interface DialogData {
   edit: boolean,
@@ -26,7 +30,7 @@ export interface DialogData {
   selector: 'users-table',
   styleUrl: 'users.component.css',
   templateUrl: 'users.component.html',
-  imports: [CommonModule ,MatTableModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatTableModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
 })
 export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
@@ -36,18 +40,23 @@ export class UsersComponent implements OnInit {
   selection = new SelectionModel<IUser>(true, []);
 
   isLoading = false
-
-  constructor(private api: ApiDbService) { }
+  constructor(private api: ApiDbService, private auth: AuthService, private snackB: MatSnackBar) { }
 
 
 
 
   ngOnInit(): void {
     this.isLoading = true
-    this.api.getUsers().subscribe((response: IUser[]) => {
-      this.usersList = response
-      this.dataSource = new MatTableDataSource<IUser>(this.usersList)
-      this.isLoading = false
+    this.api.getUsers().subscribe({
+      next: (response: IUser[]) => {
+        this.usersList = response
+        this.dataSource = new MatTableDataSource<IUser>(this.usersList)
+        this.isLoading = false
+      },
+      error: (err: Error) => {
+        this.isLoading = false
+        this.showError(`Error al cargar los usuarios: ${err.message}`)
+      }
     })
   }
 
@@ -82,16 +91,31 @@ export class UsersComponent implements OnInit {
   }
   deleteSelected() {
     for (let sel of this.selection.selected) {
-      this.usersList = this.usersList.filter(elem => elem.id != sel.id)
-      this.dataSource = new MatTableDataSource<IUser>(this.usersList)
-      this.selection.toggle(sel)
-      this.api.deleteUser(sel.id!).subscribe(response => {
-        console.log(response)
+      if (sel.id == this.auth.getCurrentUser().id) {
+        this.showError('No puedes eliminar tu propio usuario');
+        continue
+      }
+      this.api.deleteUser(sel.id!).subscribe({
+        next: (response) => {
+          this.usersList = this.usersList.filter(elem => elem.id != sel.id)
+          this.dataSource = new MatTableDataSource<IUser>(this.usersList)
+          this.selection.toggle(sel)
+          console.log(response)
+        },
+        error: (error: Error) => {
+          console.log(error)
+          this.showError(`No se pudo eliminar el usuario:${error.message} `);
+        }
       }
       )
     }
   }
-
+  showError(message: string) {
+    this.snackB.open(message, 'Cerrar', {
+      duration: 3000,
+      panelClass: ['snackbar-error']
+    });
+  }
   readonly dialog = inject(MatDialog);
   openDialog(edit: boolean): void {
     var sel: IUser | undefined;

@@ -13,10 +13,11 @@ import { AuthService } from '../services/auth/auth.service';
 import { IUser, Role } from '../models/user';
 import { CommonModule } from '@angular/common';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 
-export interface taskDataDialog{
+export interface taskDataDialog {
   edit: Boolean,
   task: ITask
 }
@@ -38,16 +39,22 @@ export class TasksComponent implements OnInit {
   selection = new SelectionModel<ITask>(true, []);
   currUs: IUser | undefined
   isLoading: boolean = false
-  constructor(private api: ApiDbService, private auth: AuthService, private cdRef: ChangeDetectorRef) { }
+  constructor(private api: ApiDbService, private auth: AuthService, private snackB: MatSnackBar) { }
 
   ngOnInit(): void {
     this.isLoading = true
     this.currUs = this.auth.getCurrentUser()
-    this.displayedColumns = this.currUs?.role == Role.Admin? ['select', 'name', 'userName', 'user', 'state']: ['name', 'state'];
-    this.api.getTasks().subscribe((response: ITask[]) => {
-      this.tasks = this.currUs?.role == Role.Admin? response: response.filter(task=> task.userId == this.currUs?.id)
-      this.dataSource = new MatTableDataSource<ITask>(this.tasks);
-      this.isLoading = false
+    this.displayedColumns = this.currUs?.role == Role.Admin ? ['select', 'name', 'userName', 'user', 'state'] : ['name', 'state'];
+    this.api.getTasks().subscribe({
+      next: (response: ITask[]) => {
+        this.tasks = this.currUs?.role == Role.Admin ? response : response.filter(task => task.userId == this.currUs?.id)
+        this.dataSource = new MatTableDataSource<ITask>(this.tasks);
+        this.isLoading = false
+      },
+      error: (err: Error) => {
+        this.isLoading = false
+        this.showError(`Error al cargar las tareas: ${err.message}`)
+      }
     })
   }
 
@@ -85,25 +92,36 @@ export class TasksComponent implements OnInit {
 
   deleteSelected() {
     for (let sel of this.selection.selected) {
-      this.tasks = this.tasks.filter(elem => elem.id != sel.id)
-      this.dataSource = new MatTableDataSource<ITask>(this.tasks)
-      this.selection.toggle(sel)
-      this.api.deleteTask(sel.id!).subscribe(response => {
-        console.log(response)
+      this.api.deleteTask(sel.id!).subscribe({
+        next: (response) => {
+          console.log(response)
+          this.tasks = this.tasks.filter(elem => elem.id != sel.id)
+          this.dataSource = new MatTableDataSource<ITask>(this.tasks)
+          this.selection.toggle(sel)
+        },
+        error: (err: Error) => {
+          this.showError(`Error al eliminar la tarea: ${err.message}`)
+        }
       }
       )
     }
   }
+  showError(message: string) {
+    this.snackB.open(message, 'Cerrar', {
+      duration: 3000,
+      panelClass: ['snackbar-error']
+    });
+  }
 
   readonly dialog = inject(MatDialog);
   openDialog(edit: boolean): void {
-    var sel:ITask;
-    if(edit) {sel = this.selection.selected[0]}
-    for(var select of this.selection.selected){
+    var sel: ITask;
+    if (edit) { sel = this.selection.selected[0] }
+    for (var select of this.selection.selected) {
       this.selection.toggle(select)
     }
     const dialogRef = this.dialog.open(CreateTaskComponent, {
-      data: {edit: edit, task: edit? sel!: null},
+      data: { edit: edit, task: edit ? sel! : null },
     });
 
     dialogRef.afterClosed().subscribe(result => {

@@ -49,8 +49,8 @@
                 @if(formCreation.get("password")?.hasError('required')){
                 <mat-error>You must enter your password</mat-error>
                 }
-                @else if(formCreation.get('password')?.hasError('minLength') && formCreation.get("password")?.touched){
-                <mat-error>Your password must contain 6 characters</mat-error>
+                @else if(formCreation.get('password')?.hasError('minlength') && formCreation.get("password")?.touched){
+                <mat-error>Password too short: min 6</mat-error>
                 }
             </mat-form-field>
 
@@ -66,7 +66,7 @@
                 @if (formCreation.get("passwordC")?.hasError('required')) {
                 <mat-error>You must enter your password</mat-error>
                 }
-                @else if (formCreation.get('passwordC')?.invalid && formCreation.get("passwordC")?.touched) {
+                @else if (formCreation.get('passwordC')?.hasError('passwordsMismatch') && formCreation.get("passwordC")?.touched) {
                 <mat-error>Las contraseñas no coinciden</mat-error>
                 }
 

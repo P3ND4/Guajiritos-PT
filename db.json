@@ -1,90 +1,12 @@
 {
   "users": [
     {
-      "email": "admin@fake",
-      "password": "$2a$10$bLvOxOiBa2XiZBo.nq8dW.dNnFzQg5c/lfilS2pmBZ7IX1J8Zjp9q",
+      "email": "admin@admin",
+      "password": "$2a$10$XZ0qcKeGn8Eu6RhvxOkfcObxVuUah9b/s8ietuB/rPT.ASLh6cJHi",
       "name": "admin",
       "role": "Admin",
-      "id": 3
-    },
-    {
-      "email": "ed@gmail",
-      "password": "$2a$10$8wicgJB3jS8Ty4XxY9u54.5TruqcP2IimQOpY2sSAGPedf6EPZA9a",
-      "name": "eduardo",
-      "role": "User",
-      "id": 5
-    },
-    {
-      "name": "marlon domingez",
-      "password": "$2a$10$AH1zruQNOeZuHzhi7r2yWOTq1GsF11K7Vg/S5y77Zz9FwXm1npZbe",
-      "role": "User",
-      "email": "mar@gmail",
-      "id": 6
-    },
-    {
-      "name": "Fulanito Perez Perez",
-      "password": "$2a$10$l8MMVacWybBcrtI0qbYyduC8yRLlGjHB4juUVJ9nE0t0.JY3PvuuW",
-      "role": "Admin",
-      "email": "fil@fafs",
-      "id": 7
-    },
-    {
-      "email": "pab@fake",
-      "password": "$2a$10$RPBhpwnXd6P2pDi1cxVSm.NnhaURj08.fVa7QO7h7XmeVWxNIaRAy",
-      "name": "Pablo de la Torriente brau y san benitez",
-      "role": "User",
-      "id": 8
-    },
-    {
-      "email": "yo@fake",
-      "password": "$2a$10$9plzUTte2Wwj043eCrOCH.3Y9vTu6/iOfOWHeNI6IwXd805W8yE0i",
-      "name": "yo",
-      "role": "User",
-      "id": 9
-    },
-    {
-      "email": "jose@fake",
-      "password": "$2a$10$6axKLrAmwh085UQoSUUO9.LXLjMJErNkSvwdAX4wC/nmD9X9uxGv6",
-      "name": "Jose",
-      "role": "Admin",
-      "id": 10
+      "id": 4
     }
   ],
-  "tasks": [
-    {
-      "name": "limpia",
-      "state": "Pendiente",
-      "userId": 3,
-      "userName": "admin",
-      "id": 1
-    },
-    {
-      "name": "edita",
-      "state": "Pendiente",
-      "userId": 6,
-      "userName": "marlon",
-      "id": 4
-    },
-    {
-      "name": "limpia",
-      "state": "En progreso",
-      "userId": 9,
-      "userName": "yo",
-      "id": 6
-    },
-    {
-      "name": "paga la luz",
-      "state": "Pendiente",
-      "userId": 9,
-      "userName": "yo",
-      "id": 7
-    },
-    {
-      "name": "limpia",
-      "state": "Pendiente",
-      "userId": 6,
-      "userName": "marlon domingez",
-      "id": 8
-    }
-  ]
+  "tasks": []
 }
