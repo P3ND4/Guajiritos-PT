@@ -12,7 +12,7 @@ import { CreateTaskComponent } from './create-task/create-task.component';
 import { AuthService } from '../services/auth/auth.service';
 import { IUser, Role } from '../models/user';
 import { CommonModule } from '@angular/common';
-import { After } from 'v8';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
 
@@ -29,29 +29,28 @@ export interface taskDataDialog{
   selector: 'tasks-table',
   styleUrl: 'tasks.component.css',
   templateUrl: 'tasks.component.html',
-  imports: [CommonModule, MatTableModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule, MatTableModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
 })
-export class TasksComponent implements OnInit, AfterViewInit {
+export class TasksComponent implements OnInit {
   displayedColumns: string[] = []
   tasks: ITask[] = []
   dataSource = new MatTableDataSource<ITask>(this.tasks);
   selection = new SelectionModel<ITask>(true, []);
   currUs: IUser | undefined
-
+  isLoading: boolean = false
   constructor(private api: ApiDbService, private auth: AuthService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
+    this.isLoading = true
+    this.currUs = this.auth.getCurrentUser()
+    this.displayedColumns = this.currUs?.role == Role.Admin? ['select', 'name', 'userName', 'user', 'state']: ['name', 'state'];
     this.api.getTasks().subscribe((response: ITask[]) => {
       this.tasks = this.currUs?.role == Role.Admin? response: response.filter(task=> task.userId == this.currUs?.id)
       this.dataSource = new MatTableDataSource<ITask>(this.tasks);
-      this.cdRef.detectChanges()
+      this.isLoading = false
     })
   }
-  ngAfterViewInit(): void {
-    this.currUs = this.auth.getCurrentUser()
-    this.displayedColumns = this.currUs?.role == Role.Admin? ['select', 'name', 'userName', 'user', 'state']: ['name', 'state'];
-    this.cdRef.detectChanges()
-  }
+
 
   /** Whether the number of selected elements matches the total number of rows. */
   isAllSelected() {

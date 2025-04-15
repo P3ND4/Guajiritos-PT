@@ -52,7 +52,7 @@ export class CreateTaskComponent implements OnInit {
     this.dialogRef.close();
   }
 
-
+  errMsg = ''
   submit() {
     console.log(this.formTaskCreate.get('user')?.value)
     const user: IUser = this.formTaskCreate.get('user')?.value
@@ -63,17 +63,30 @@ export class CreateTaskComponent implements OnInit {
       userName: user.name
     }
     if (this.data.edit) {
-      this.api.editTask(this.data.task.id!, task).subscribe(response => {
-        console.log(response)
+      this.api.editTask(this.data.task.id!, task).subscribe({
+        next: (response) => {
+          this.errMsg = ''
+          console.log(response)
+          this.dialogRef.close()
+        },
+        error: (err) => {
+          this.errMsg = err.error
+        }
       }
       )
     }
     else {
-      this.api.createTask(task).subscribe(response => {
-        console.log(response)
+      this.api.createTask(task).subscribe({
+        next: (response) => {
+          this.errMsg = ''
+          console.log(response)
+          this.dialogRef.close()
+        },
+        error: (err) => {
+          this.errMsg = err.error
+        }
       }
       )
     }
-    this.dialogRef.close()
   }
 }

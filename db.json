@@ -41,6 +41,13 @@
       "name": "yo",
       "role": "User",
       "id": 9
+    },
+    {
+      "email": "jose@fake",
+      "password": "$2a$10$6axKLrAmwh085UQoSUUO9.LXLjMJErNkSvwdAX4wC/nmD9X9uxGv6",
+      "name": "Jose",
+      "role": "Admin",
+      "id": 10
     }
   ],
   "tasks": [
@@ -52,32 +59,11 @@
       "id": 1
     },
     {
-      "name": "friega",
-      "state": "Pendiente",
-      "userId": 7,
-      "userName": "Fulanito Perez Perez",
-      "id": 2
-    },
-    {
-      "name": "friega",
-      "state": "Completada",
-      "userId": 5,
-      "userName": "eduardo",
-      "id": 3
-    },
-    {
       "name": "edita",
       "state": "Pendiente",
       "userId": 6,
       "userName": "marlon",
       "id": 4
-    },
-    {
-      "name": "lavate la cara",
-      "state": "Pendiente",
-      "userId": 5,
-      "userName": "eduardo",
-      "id": 5
     },
     {
       "name": "limpia",
@@ -92,6 +78,13 @@
       "userId": 9,
       "userName": "yo",
       "id": 7
+    },
+    {
+      "name": "limpia",
+      "state": "Pendiente",
+      "userId": 6,
+      "userName": "marlon domingez",
+      "id": 8
     }
   ]
 }

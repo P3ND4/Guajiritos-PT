@@ -174,29 +174,31 @@
     }
   }
 </style>
-<!--
-  <div *ngIf="loading" class="overlay">
-    <mat-spinner></mat-spinner>
-  </div>
-  -->
 
 <div *ngIf="isLoggedIn()" class = "tab-container">
-  <div class="tab-header">
-    <h1>Welcome {{user?.name}}</h1>
+  <mat-toolbar class="toolbar">
+    <div>
+      <button mat-icon-button [disabled]="user?.role != 'Admin'" [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item routerLink="tasks">
+          <mat-icon>task</mat-icon>
+          Tareas
+        </button>
+        <button mat-menu-item routerLink="users">
+          <mat-icon>person</mat-icon>
+          Usuarios
+        </button>
+        </mat-menu>
+      <span>{{user?.name}}</span>
+    </div>
+    <span class="example-spacer"></span>
     <button mat-button class="logout-button" (click)="logout()">
       <mat-icon>logout</mat-icon>
       Logout
     </button>
-  </div>
-  <nav mat-tab-nav-bar class="nav-bar" [tabPanel]="tabPanel">
-    @for (link of links; track link.name) {
-      <a mat-tab-link class="nav-link"
-        (click)="activeLink = link.route"
-        routerLink="/{{link.route}}"
-        [active]="isActive(link.route)"> {{link.name}} </a>
-    }
-  </nav>
-  <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>
+  </mat-toolbar>
 </div>
 
 <router-outlet />

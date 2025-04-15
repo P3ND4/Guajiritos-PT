@@ -9,8 +9,8 @@ import { loginGuard } from './guards/login.guard';
 
 export const routes: Routes = [
     {path: "", redirectTo: "tasks", pathMatch: "full"}, 
-    {path: "tasks", canActivate: [loginGuard], loadComponent:() => import('./tasks/tasks.component').then(m => m.TasksComponent)},
-    {path: "login", loadComponent:() => import('./auth/login/login.component').then(m=> m.LoginComponent)},
-    {path: "users", canActivate: [adminGuard, loginGuard], loadComponent:() => import('./users/users.component').then(m => m.UsersComponent)},
+    {path: "tasks", component: TasksComponent, canActivate: [loginGuard]},
+    {path: "login", component: LoginComponent},
+    {path: "users",  component: UsersComponent, canActivate: [adminGuard, loginGuard]},
     {path: "**", redirectTo: "tasks", pathMatch: "full"}
 ];

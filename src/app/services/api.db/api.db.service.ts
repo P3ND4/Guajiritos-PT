@@ -19,7 +19,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       })
     )
       
@@ -31,7 +31,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       }))
     };
     editUser(id: number, body: IUser){
@@ -41,7 +41,7 @@ export class ApiDbService {
         }),
         catchError((err) => {
           console.error('Error desde la API', err);
-          return throwError(() => new Error(err.message));
+          return throwError(() => new Error(err.error));
         })
       )
     }
@@ -54,7 +54,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       })
     )
   }
@@ -65,7 +65,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       }))
   }
   deleteUser(id: number): Observable<any> {
@@ -75,7 +75,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       }))
   }
   deleteTask(id: number): Observable<any> {
@@ -85,7 +85,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       }))
   }
   createTask(task: ITask) {
@@ -95,7 +95,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       }))
   }
   editTask(id:number, task:ITask){
@@ -105,7 +105,7 @@ export class ApiDbService {
       }),
       catchError((err) => {
         console.error('Error desde la API', err);
-        return throwError(() => new Error(err.message));
+        return throwError(() => new Error(err.error));
       }))
   }
 }

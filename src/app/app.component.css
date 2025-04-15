@@ -1,15 +1,16 @@
-.tab-header{
+.toolbar{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     margin-left: 20px;
     margin: 10px;
+    background-color: #ffffff;
+    border-color: #e0e0e0;
+    border-radius: 8px;
 }
-.nav-bar{
+.tab-container{
     display: flex;
     flex-direction: row;
-    justify-content: start;    
+    margin: 10px;    
 }
-.nav-link{
-    max-width: 100px;
-}
+

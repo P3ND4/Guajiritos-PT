@@ -18,6 +18,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { Role, IUser } from '../../models/user';
 import { ApiDbService } from '../../services/api.db/api.db.service';
 import { DialogData } from '../users.component';
+import { HttpErrorResponse } from '@angular/common/http';
 
 
 @Component({
@@ -107,18 +108,30 @@ export class CreateUserComponent implements OnInit {
       email: this.formCreation.get('email')?.value
     }
     if (this.data.edit) {
-      this.api.editUser(this.data.user.id!, result).subscribe(response => {
-        console.log(response)
+      this.api.editUser(this.data.user.id!, result).subscribe({
+        next: (response) => {
+          console.log(response)
+          this.errMsg = ''
+          this.dialogRef.close();
+        },
+        error: (err: Error) => {
+          this.errMsg = err.message
+        }
       })
-      this.dialogRef.close();
     }
     else {
-      this.api.createUsers(result).subscribe(response => {
-        console.log(response)
-      }
-      )
-      this.dialogRef.close();
-    }
+      this.api.createUsers(result).subscribe({
+        next: (response) => {
+          console.log(response)
+          this.errMsg = ''
+          this.dialogRef.close();
+        },
+        error: (err: Error) => {
+          console.log(err)
+          this.errMsg = err.message
+          
+        }
+      })}
 
   }
 }

@@ -10,6 +10,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { response } from 'express';
 import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CreateUserComponent } from './create-user/create-user.component';
+import { MatProgressSpinner, MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { CommonModule } from '@angular/common';
 
 export interface DialogData {
   edit: boolean,
@@ -24,7 +26,7 @@ export interface DialogData {
   selector: 'users-table',
   styleUrl: 'users.component.css',
   templateUrl: 'users.component.html',
-  imports: [MatTableModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatIconModule],
+  imports: [CommonModule ,MatTableModule, MatCheckboxModule, MatCardModule, MatButtonModule, MatIconModule, MatProgressSpinnerModule],
 })
 export class UsersComponent implements OnInit {
   displayedColumns: string[] = ['select', 'position', 'name', 'weight', 'symbol'];
@@ -33,6 +35,7 @@ export class UsersComponent implements OnInit {
   dataSource = new MatTableDataSource<IUser>(this.usersList);
   selection = new SelectionModel<IUser>(true, []);
 
+  isLoading = false
 
   constructor(private api: ApiDbService) { }
 
@@ -40,9 +43,11 @@ export class UsersComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.isLoading = true
     this.api.getUsers().subscribe((response: IUser[]) => {
       this.usersList = response
       this.dataSource = new MatTableDataSource<IUser>(this.usersList)
+      this.isLoading = false
     })
   }
 
