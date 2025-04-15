@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, Inject, inject, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
@@ -24,8 +24,8 @@ export class CreateTaskComponent implements OnInit {
   formTaskCreate: FormGroup;
   userList: IUser[] = []
   data = inject<taskDataDialog>(MAT_DIALOG_DATA)
-  constructor(form: FormBuilder, private api: ApiDbService) {
-    this.formTaskCreate = form.group({
+  constructor(private form:FormBuilder, private api: ApiDbService) {
+    this.formTaskCreate = this.form.group({
       name: ['', Validators.required],
       user: [null, Validators.required],
       state: [State.Todo,]
