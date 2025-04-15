@@ -31,11 +31,12 @@ export class AppComponent implements OnInit, AfterViewInit {
 
   }
   ngAfterViewInit(): void {
-    this.router.events.subscribe(event =>{
+        this.router.events.subscribe(event =>{
       this.user = this.authServ.getCurrentUser()
       if (this.user?.role == Role.Admin) this.links = [{ route: "tasks", name: "Tareas" }, { route: "users", name: "Usuarios" }]
     }
     )
+    this.cdRef.detectChanges()
   }
 
   isLoggedIn(): boolean {

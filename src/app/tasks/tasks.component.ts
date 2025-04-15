@@ -1,5 +1,5 @@
 import { SelectionModel } from '@angular/cdk/collections';
-import { AfterViewInit, Component, inject, OnInit } from '@angular/core';
+import { AfterViewInit, ChangeDetectorRef, Component, inject, OnInit } from '@angular/core';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatCardModule } from '@angular/material/card';
@@ -38,17 +38,19 @@ export class TasksComponent implements OnInit, AfterViewInit {
   selection = new SelectionModel<ITask>(true, []);
   currUs: IUser | undefined
 
-  constructor(private api: ApiDbService, private auth: AuthService) { }
+  constructor(private api: ApiDbService, private auth: AuthService, private cdRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
     this.api.getTasks().subscribe((response: ITask[]) => {
       this.tasks = this.currUs?.role == Role.Admin? response: response.filter(task=> task.userId == this.currUs?.id)
       this.dataSource = new MatTableDataSource<ITask>(this.tasks);
+      this.cdRef.detectChanges()
     })
   }
   ngAfterViewInit(): void {
     this.currUs = this.auth.getCurrentUser()
     this.displayedColumns = this.currUs?.role == Role.Admin? ['select', 'name', 'userName', 'user', 'state']: ['name', 'state'];
+    this.cdRef.detectChanges()
   }
 
   /** Whether the number of selected elements matches the total number of rows. */
